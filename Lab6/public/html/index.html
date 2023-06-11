@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <meta charset="UTF-8" />
+  <head>
+    <title>Teachinder</title>
+  </head>
+
+  <link href="../css/style.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+  />
+
+  <!-- LeafletJS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- day.js -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.8/dayjs.min.js"></script>
+
+  <body class="body">
+    <section class="header">
+      <div class="logo-div">
+        <img
+          src="../images/logo.png"
+          loading="lazy"
+          width="300"
+          height="45"
+          alt="Teachinder Logo"
+          class="logo"
+        />
+        <img
+          src="../images/logo-hover.png"
+          loading="lazy"
+          width="300"
+          height="45"
+          alt="Teachinder Logo Selected"
+          class="logo-hover"
+        />
+      </div>
+      <form action="search" class="search">
+        <input
+          type="search"
+          class="search-input"
+          maxlength="256"
+          name="query"
+          placeholder="Name, note or age to search"
+          id="search"
+          required
+        />
+        <input type="submit" value="Search" class="button search-button" />
+      </form>
+    </section>
+
+    <section class="nav-bar">
+      <div class="nav-menu">
+        <div id="add-popup" class="popup">
+          <div class="popup-content">
+            <div class="popup-header">
+              <p class="popup-header-text">Add Teacher</p>
+              <p class="popup-close-button" onclick="closeAddPopup()">
+                &times;
+              </p>
+            </div>
+            <div class="popup-main">
+              <form id="addTeacherForm">
+                <label for="fname" class="field-title"><p>Name</p></label>
+                <input
+                  type="text"
+                  id="fname"
+                  name="fname"
+                  maxlength="40"
+                  placeholder="Enter name"
+                  class="field-full"
+                  autofocus
+                  required
+                />
+
+                <label for="specialty" class="field-title"
+                  ><p>Specialty</p></label
+                >
+                <select
+                  name="specialty-list"
+                  id="specialty-list"
+                  class="field-full"
+                >
+                  <option value="" disabled selected>
+                    -- Select specialty --
+                  </option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="English">English</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Dancing">Dancing</option>
+                  <option value="Chess">Chess</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Law">Law</option>
+                  <option value="Art">Art</option>
+                  <option value="Medicine">Medicine</option>
+                  <option value="Statistics">Statistics</option>
+                </select>
+
+                <div class="field-group">
+                  <label for="country" class="field-title"
+                    ><p>Country</p></label
+                  >
+                  <label for="city" class="field-title"><p>City</p></label>
+                </div>
+                <div class="field-group">
+                  <input
+                    type="text"
+                    list="country-list"
+                    id="country-input"
+                    name="country-input"
+                    placeholder="Знайти країну"
+                    class="field-full"
+                    required
+                  />
+                  <datalist id="country-list"></datalist>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    class="field-full"
+                    required
+                  />
+                </div>
+
+                <div class="field-group">
+                  <label for="email" class="field-title"><p>Email</p></label>
+                  <label for="phone" class="field-title"><p>Phone</p></label>
+                </div>
+
+                <div class="field-group">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="user@gmail.com"
+                    class="field-full"
+                    required
+                    autocomplete="off"
+                  />
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+380 (xx) xxx-xx-xx"
+                    pattern="^\+380 \(\d{2}\) \d{3}-\d{2}-\d{2}$"
+                    class="field-full"
+                    required
+                  />
+                </div>
+
+                <label for="birth" class="field-title"
+                  ><p>Date of birth</p></label
+                >
+                <input
+                  type="date"
+                  id="birth"
+                  name="birthday"
+                  value="yyyy-MM-dd"
+                  class="field-full field-half"
+                  required
+                />
+
+                <div class="checkbox-row">
+                  <p class="field-title filter-title">Sex</p>
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="Female"
+                  />
+                  <label for="female">Female</label><br />
+                  <input type="radio" id="male" name="gender" value="Male" />
+                  <label for="male">Male</label><br />
+                </div>
+
+                <label for="bgcolor" class="field-title"
+                  ><p>Background color</p></label
+                >
+                <input type="color" id="bgcolor" name="bgcolor" required />
+
+                <label for="comment" class="field-title"
+                  ><p>Notes (optional)</p></label
+                >
+                <textarea
+                  type="comment"
+                  id="comment"
+                  name="comment"
+                  maxlength="200"
+                  class="field-full"
+                ></textarea>
+
+                <p></p>
+                <input type="submit" value="Add" class="button button-wide" />
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-links">
+          <a href="#" class="menu-link">Teachers</a>
+          <a href="#" class="menu-link">Statistics</a>
+          <a href="#" class="menu-link">Favorites</a>
+          <a href="#" class="menu-link">About</a>
+        </div>
+      </div>
+      <a href="#" class="button" onclick="openAddPopup()">Add teacher</a>
+    </section>
+
+    <img
+      src="../images/section-divider.svg"
+      loading="lazy"
+      alt="Section Divider"
+      class="section-divider"
+    />
+
+    <section class="top-teachers">
+      <h1 class="heading">Top Teachers</h1>
+      <div class="filter-div">
+        <div class="filter-el">
+          <form action="#">
+            <label for="age" class="field-title filter-title">Age</label>
+            <select name="age" id="age">
+              <option value="" selected>-- Select age --</option>
+              <option value="18-29">18-29</option>
+              <option value="30-49">30-49</option>
+              <option value="50-64">50-64</option>
+              <option value="65-100">65+</option>
+            </select>
+          </form>
+        </div>
+
+        <div class="filter-el">
+          <label for="country" class="field-title filter-title">Country</label>
+          <select name="country" id="country">
+            <option value="" selected>-- Select country --</option>
+          </select>
+        </div>
+
+        <div class="filter-el">
+          <form action="#">
+            <label for="gender" class="field-title filter-title">Sex</label>
+            <select name="gender" id="gender">
+              <option value="unselected" selected>-- Select sex --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </form>
+        </div>
+
+        <div class="filter-el">
+          <input
+            type="checkbox"
+            name="photoonly"
+            value="photoonly"
+            id="photoonly"
+          />
+          <label for="photoonly" class="field-title filter-title"
+            >Only with photo</label
+          >
+        </div>
+
+        <div class="filter-el filter-el-last">
+          <input
+            type="checkbox"
+            name="favoriteonly"
+            value="favoriteonly"
+            id="favoriteonly"
+          />
+          <label for="favoriteonly" class="field-title filter-title"
+            >Only favorites</label
+          >
+        </div>
+      </div>
+
+      <div class="top-teachers-div">
+        <div class="top-teachers-grid" id="teachersContainer"></div>
+        <div class="popup" id="info-popup"></div>
+      </div>
+    </section>
+
+    <img
+      src="../images/section-divider.svg"
+      loading="lazy"
+      alt="Section Divider"
+      class="section-divider"
+    />
+
+    <section class="statistics">
+      <div class="chart-container" style="align-self: center; height: 70vh; width: 86vw; display: flex; justify-content: center; align-items: center;">
+        <canvas id="pieChart"></canvas>
+      </div>
+    </section>
+    
+
+    <img
+      src="images/section-divider.svg"
+      loading="lazy"
+      alt="Section Divider"
+      class="section-divider"
+    />
+
+    <section class="favorites">
+      <h1 class="heading">Favorites</h1>
+      <div class="teacher-wrapper">
+        <i id="left" class="fa-solid fa-angle-left"></i>
+        <div class="teacher-carousel" id="displayFavorites">
+          <div class="teacher-carousel-el">
+            <img
+              src="images/stock-teacher-photo.jpg"
+              loading="lazy"
+              alt="Teacher1"
+              class="teacher-img-round"
+            />
+            <p class="teacher-name">Ihor<br />Tkachuk</p>
+            <p class="teacher-subject">Chemistry</p>
+            <p class="teacher-country">Ukraine</p>
+          </div>
+        </div>
+        <i id="right" class="fa-solid fa-angle-right"></i>
+      </div>
+    </section>
+
+    <img
+      src="images/section-divider.svg"
+      loading="lazy"
+      alt="Section Divider"
+      class="section-divider"
+    />
+
+    <section class="footer">
+      <footer>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+          porttitor lorem ut dolor tempus ultricies. Aliquam facilisis venenatis
+          odio, non laoreet metus. Nam congue mollis urna. Orci varius natoque
+          penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+          Quisque aliquet feugiat ex, sit amet elementum dolor fringilla nec.
+          Sed dignissim blandit massa sed tempor. Suspendisse dictum ligula in
+          felis pellentesque elementum. Quisque at augue nibh.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia curae; In hac habitasse platea dictumst. Etiam porta
+          vestibulum lacinia.
+        </p>
+        <p>
+          In maximus congue justo nec hendrerit. Aenean rutrum lacus et faucibus
+          molestie. Fusce sapien massa, sagittis a iaculis vitae, laoreet sit
+          amet lacus.
+        </p>
+      </footer>
+    </section>
+
+    <section class="nav-bar">
+      <div class="nav-menu">
+        <div id="add-popup" class="popup">
+          <div class="popup-content">
+            <div class="popup-header">
+              <p class="popup-header-text">Add Teacher</p>
+              <p class="popup-close-button" onclick="closeAddPopup()">
+                &times;
+              </p>
+            </div>
+            <div class="popup-main">
+              <form method="post" action="">
+                <label for="fname" class="field-title"><p>Name</p></label>
+                <input
+                  type="text"
+                  id="fname"
+                  name="fname"
+                  maxlength="40"
+                  placeholder="Enter name"
+                  class="field-full"
+                  autofocus
+                  required
+                />
+
+                <label for="specialty" class="field-title"
+                  ><p>Specialty</p></label
+                >
+                <select
+                  name="specialty-list"
+                  id="specialty-list"
+                  class="field-full"
+                >
+                  <option value="" disabled selected>
+                    -- Select specialty --
+                  </option>
+                  <option value="mathematics">Mathematics</option>
+                  <option value="physics">Physics</option>
+                  <option value="english">English</option>
+                  <option value="cs">Computer Science</option>
+                  <option value="dancing">Dancing</option>
+                  <option value="chess">Chess</option>
+                  <option value="biology">Biology</option>
+                  <option value="chemistry">Chemistry</option>
+                  <option value="law">Law</option>
+                  <option value="art">Art</option>
+                  <option value="medicine">Medicine</option>
+                  <option value="statistics">Statistics</option>
+                </select>
+
+                <div class="field-group">
+                  <label for="country" class="field-title"
+                    ><p>Country</p></label
+                  >
+                  <label for="city" class="field-title"><p>City</p></label>
+                </div>
+                <div class="field-group">
+                  <input
+                    type="text"
+                    list="country-list"
+                    id="country"
+                    name="country"
+                    placeholder="Знайти країну"
+                    class="field-full"
+                    required
+                  />
+                  <datalist id="country-list"></datalist>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    class="field-full"
+                    required
+                  />
+                </div>
+
+                <div class="field-group">
+                  <label for="email" class="field-title"><p>Email</p></label>
+                  <label for="phone" class="field-title"><p>Phone</p></label>
+                </div>
+
+                <div class="field-group">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="user@gmail.com"
+                    class="field-full"
+                    required
+                    autocomplete="off"
+                  />
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+380 (xx) xxx-xx-xx"
+                    pattern="^\+380 \(\d{2}\) \d{3}-\d{2}-\d{2}$"
+                    class="field-full"
+                    required
+                  />
+                </div>
+
+                <label for="birth" class="field-title"
+                  ><p>Date of birth</p></label
+                >
+                <input
+                  type="date"
+                  id="birth"
+                  name="birthday"
+                  value="yyyy-MM-dd"
+                  class="field-full field-half"
+                  required
+                />
+
+                <div class="checkbox-row">
+                  <p class="field-title filter-title">Sex</p>
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="female"
+                  />
+                  <label for="female">Male</label><br />
+                  <input type="radio" id="male" name="gender" value="male" />
+                  <label for="male">Female</label><br />
+                </div>
+
+                <label for="bgcolor" class="field-title"
+                  ><p>Background color</p></label
+                >
+                <input type="color" id="bgcolor" name="bgcolor" required />
+
+                <label for="comment" class="field-title"
+                  ><p>Notes (optional)</p></label
+                >
+                <textarea
+                  type="comment"
+                  id="comment"
+                  name="comment"
+                  maxlength="200"
+                  class="field-full"
+                ></textarea>
+
+                <p></p>
+                <input type="submit" value="Add" class="button button-wide" />
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-links">
+          <a href="#" class="menu-link">Teachers</a>
+          <a href="#" class="menu-link">Statistics</a>
+          <a href="#" class="menu-link">Favorites</a>
+          <a href="#" class="menu-link">About</a>
+        </div>
+      </div>
+      <a href="#" class="button" onclick="openAddPopup()">Add teacher</a>
+    </section>
+    <script src="../js/app.js" type="module"></script>
+    <script src="../js/animations.js"></script>
+  </body>
+</html>
