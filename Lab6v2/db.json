@@ -1,0 +1,60 @@
+{
+  "teachers": [
+    {
+      "full_name": "John Firth",
+      "course": "biology",
+      "country": "Ukraine",
+      "city": "Kyiv",
+      "email": "jfirth@gmail.com",
+      "phone": "+380 (97) 444-44-44",
+      "age": 33,
+      "gender": "Male",
+      "note": "",
+      "background_color": "#000000",
+      "favorite": false,
+      "id": 1
+    },
+    {
+      "full_name": "Eliza Ross",
+      "course": "Biology",
+      "country": "Canada",
+      "city": "Vancouver",
+      "email": "elross@gmail.com",
+      "phone": "+380 (97) 444-44-44",
+      "age": 27,
+      "gender": "Female",
+      "note": "",
+      "background_color": "#000000",
+      "favorite": false,
+      "id": 2
+    },
+    {
+      "full_name": "Claire Davis",
+      "course": "Biology",
+      "country": "New Zealand",
+      "city": "City",
+      "email": "claired@gmail.com",
+      "phone": "+380 (97) 444-44-44",
+      "age": 40,
+      "gender": "Female",
+      "note": "",
+      "background_color": "#000000",
+      "favorite": false,
+      "id": 3
+    },
+    {
+      "full_name": "Jack Black",
+      "course": "Law",
+      "country": "Ireland",
+      "city": "Dublin",
+      "email": "jack@gmail.com",
+      "phone": "+380 (97) 444-44-44",
+      "age": 42,
+      "gender": "Male",
+      "note": "some note.",
+      "background_color": "#000000",
+      "favorite": false,
+      "id": 4
+    }
+  ]
+}
